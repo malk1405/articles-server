@@ -15,10 +15,11 @@ const authorSchema = new Schema({
   // birthDate: {
   //   type: Date
   // },
-
   email: {
     type: mongoose.SchemaTypes.Email
-  }
+  },
+
+  articles: [Schema.Types.ObjectId]
 });
 
 const Author = mongoose.model("Author", authorSchema);
