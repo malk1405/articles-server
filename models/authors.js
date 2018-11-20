@@ -12,9 +12,9 @@ const authorSchema = new Schema({
     type: String,
     required: true
   },
-  birthDate: {
-    type: Date
-  },
+  // birthDate: {
+  //   type: Date
+  // },
 
   email: {
     type: mongoose.SchemaTypes.Email

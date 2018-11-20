@@ -1,7 +1,4 @@
-// authorsControllers.js
-const Author = require("../models/Authors");
-
-// Defining all methods and business logic for routes
+const Author = require("../models/authors");
 
 module.exports = {
   findAll: function(req, res) {
