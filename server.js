@@ -16,6 +16,13 @@ app.get("/", (req, res) => {
 
 app.use(routes);
 
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const { message } = err;
+
+  res.status(statusCode).json({ message });
+});
+
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });

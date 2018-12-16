@@ -1,6 +1,7 @@
 const Author = require("../models/authors");
 const myObjectId = require("mongoose").Types.ObjectId;
 
+const { catchErr } = require("../utils/error");
 const { checkDate } = require("../utils/date");
 
 module.exports = {
@@ -14,13 +15,13 @@ module.exports = {
       .then(author => res.json(author))
       .catch(err => res.status(422).json(err));
   },
-  create: function(req, res) {
+  create: function(req, res, next) {
     const { name, lastname, birthDate, email } = req.body;
     const newBirthDate = checkDate(birthDate);
 
     Author.create({ name, lastname, birthDate: newBirthDate, email })
       .then(newAuthor => res.json(newAuthor))
-      .catch(err => res.status(422).json(err));
+      .catch(err => catchErr(err, next));
   },
   update: function(req, res) {
     const { name, lastname, birthDate, email } = req.body;
