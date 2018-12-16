@@ -1,11 +1,7 @@
 const Author = require("../models/authors");
 const myObjectId = require("mongoose").Types.ObjectId;
 
-const checkDate = value => {
-  if (!Date.parse(value)) return undefined;
-
-  return new Date(value);
-};
+const { checkDate } = require("../utils/date");
 
 module.exports = {
   findAll: function(req, res) {
@@ -14,7 +10,7 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   findById: function(req, res) {
-    Author.findById(req.params.id)
+    Author.findById(myObjectId(req.params.id))
       .then(author => res.json(author))
       .catch(err => res.status(422).json(err));
   },
