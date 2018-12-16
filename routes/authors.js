@@ -12,8 +12,4 @@ router
   .put(authorsController.update)
   .delete(authorsController.remove);
 
-// router.route("/").get((req, res) => {
-//   res.send({ name: "Oleg1", b: 1235 });
-// });
-
 module.exports = router;

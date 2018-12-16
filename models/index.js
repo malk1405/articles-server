@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 const URI = require("../config/index");
 
-mongoose.connect(URI);
+mongoose.connect(
+  URI,
+  { useNewUrlParser: true }
+);
 // When successfully connected
 mongoose.connection.on("connected", () => {
   console.log("Established Mongoose Default Connection");
