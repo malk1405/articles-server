@@ -16,7 +16,12 @@ const authorSchema = new Schema({
     type: Date
   },
   email: {
-    type: mongoose.SchemaTypes.Email
+    type: mongoose.SchemaTypes.Email,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
   }
 });
 

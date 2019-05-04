@@ -7,7 +7,12 @@ const { checkDate } = require("../utils/date");
 module.exports = {
   findAll: function(req, res) {
     Author.find(req.query)
-      .then(authors => res.json(authors))
+      .then(authors => {
+        authors.forEach(author => {
+          author.password = "";
+        });
+        res.json(authors);
+      })
       .catch(err => res.status(422).json(err));
   },
   findById: function(req, res) {
@@ -16,10 +21,10 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   create: function(req, res, next) {
-    const { name, lastname, birthDate, email } = req.body;
+    const { name, lastname, birthDate, email, password } = req.body;
     const newBirthDate = checkDate(birthDate);
 
-    Author.create({ name, lastname, birthDate: newBirthDate, email })
+    Author.create({ name, lastname, birthDate: newBirthDate, email, password })
       .then(newAuthor => res.json(newAuthor))
       .catch(err => catchErr(err, next));
   },
@@ -32,7 +37,9 @@ module.exports = {
     if (newBirthDate) newAuthor.birthDate = newBirthDate;
     if (email) newAuthor.email = email;
     Author.findOneAndUpdate({ _id: myObjectId(req.params.id) }, newAuthor)
-      .then(author => res.json(author))
+      .then(author => {
+        res.json(author);
+      })
       .catch(err => res.status(422).json(err));
   },
   remove: function(req, res) {
