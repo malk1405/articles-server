@@ -36,7 +36,9 @@ module.exports = {
     if (lastname) newAuthor.lastname = lastname;
     if (newBirthDate) newAuthor.birthDate = newBirthDate;
     if (email) newAuthor.email = email;
-    Author.findOneAndUpdate({ _id: myObjectId(req.params.id) }, newAuthor)
+    Author.findOneAndUpdate({ _id: myObjectId(req.params.id) }, newAuthor, {
+      new: true
+    })
       .then(author => {
         res.json(author);
       })
