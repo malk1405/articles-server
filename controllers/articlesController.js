@@ -38,7 +38,7 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   remove: function(req, res) {
-    Article.findById(myObjectId(req.params.id))
+    Article.findById(myObjectId(req.body.id))
       .then(article => article.remove())
       .then(allarticles => res.json(allarticles))
       .catch(err => res.status(422).json(err));
