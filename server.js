@@ -10,11 +10,6 @@ require("./models");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// app.use("*", (req, res, next) => {
-//   console.log(req.body);
-//   next();
-// });
-
 app.use(routes);
 
 app.use((err, req, res, next) => {
