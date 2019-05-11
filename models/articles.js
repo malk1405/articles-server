@@ -15,12 +15,11 @@ const articleSchema = new Schema({
     type: String,
     required: true
   },
-  publicationDate: Date,
+  publicationDate: Number,
   authors: {
     type: [authorSchema]
   }
 });
-
 const Article = mongoose.model("Article", articleSchema);
 
 module.exports = Article;
