@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 const URI = require("../config/index");
 
-mongoose.connect(URI, { useNewUrlParser: true, useFindAndModify: false });
+mongoose.connect(URI, {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useCreateIndex: true
+});
 // When successfully connected
 mongoose.connection.on("connected", () => {
   console.log("Established Mongoose Default Connection");
