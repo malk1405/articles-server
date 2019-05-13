@@ -36,7 +36,6 @@ authorSchema.pre("save", async function(next) {
     const hashedPassword = await hashPassword(password);
     user.password = hashedPassword;
   } catch (error) {
-    console.log(error);
     catchErr(error, next);
   }
 
