@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 require("mongoose-type-email");
+const bcrypt = require("bcryptjs");
+const { catchErr } = require("../utils/error");
 
 const Schema = mongoose.Schema;
 
@@ -25,6 +27,35 @@ const authorSchema = new Schema({
     required: true
   }
 });
+
+authorSchema.pre("save", async function(next) {
+  const user = this;
+  const { password } = user;
+
+  try {
+    const hashedPassword = await hashPassword(password);
+    user.password = hashedPassword;
+  } catch (error) {
+    console.log(error);
+    catchErr(error, next);
+  }
+
+  next();
+});
+
+async function hashPassword(password) {
+  const hashedPassword = await new Promise((resolve, reject) => {
+    bcrypt.genSalt(10, function(err, salt) {
+      if (err) reject(err);
+      bcrypt.hash(password, salt, function(err, hash) {
+        if (err) reject(err);
+        resolve(hash);
+      });
+    });
+  });
+
+  return hashedPassword;
+}
 
 const Author = mongoose.model("Author", authorSchema);
 
