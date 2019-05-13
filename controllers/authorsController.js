@@ -5,8 +5,11 @@ const { catchErr } = require("../utils/error");
 const { checkDate } = require("../utils/date");
 
 module.exports = {
-  findAll: function(req, res) {
-    Author.find(req.query)
+  findAll: function({ query }, res) {
+    let regex = new RegExp("", "i");
+    const { search } = query;
+    if (search) regex = new RegExp(search, "i");
+    Author.find({ $or: [{ lastname: regex }, { name: regex }] })
       .then(authors => {
         authors.forEach(author => {
           author.password = "";
