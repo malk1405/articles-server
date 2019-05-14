@@ -29,12 +29,11 @@ const authorSchema = new Schema({
 });
 
 authorSchema.pre("save", async function(next) {
-  const user = this;
-  const { password } = user;
+  let { password } = this;
 
   try {
     const hashedPassword = await hashPassword(password);
-    user.password = hashedPassword;
+    password = hashedPassword;
   } catch (error) {
     catchErr(error, next);
   }
