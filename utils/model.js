@@ -9,29 +9,31 @@ module.exports.createSchema = function(fields) {
       res[name] = {};
       if (required === true) res[name].required = true;
       if (unique === true) res[name].unique = true;
+      if (typeof type === "undefined")
+        res[name].type = mongoose.SchemaTypes.String;
+      else
+        switch (type) {
+          case "text":
+          case "password":
+            res[name].type = mongoose.SchemaTypes.String;
+            break;
 
-      switch (type) {
-        case "string":
-        case "password":
-          res[name].type = mongoose.SchemaTypes.String;
-          break;
+          case "date":
+            res[name].type = mongoose.SchemaTypes.Date;
+            break;
 
-        case "date":
-          res[name].type = mongoose.SchemaTypes.Date;
-          break;
+          case "email":
+            res[name].type = mongoose.SchemaTypes.Email;
+            break;
 
-        case "email":
-          res[name].type = mongoose.SchemaTypes.Email;
-          break;
-
-        case "number":
-          res[name].type = mongoose.SchemaTypes.Number;
-          break;
-        default:
-          throw new Error(
-            `Неподдерживаемый тип. Элемент ${JSON.stringify(el)}`
-          );
-      }
+          case "number":
+            res[name].type = mongoose.SchemaTypes.Number;
+            break;
+          default:
+            throw new Error(
+              `Неподдерживаемый тип. Элемент ${JSON.stringify(el)}`
+            );
+        }
     } else
       throw new Error(`Не задано полe name. Элемент ${JSON.stringify(el)}`);
   });

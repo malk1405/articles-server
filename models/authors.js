@@ -6,16 +6,22 @@ const { createSchema } = require("../utils/model");
 const Schema = mongoose.Schema;
 
 const fields = [
-  { name: "name", type: "string", required: true },
-  { name: "patronym", type: "string" },
-  { name: "lastname", type: "string", required: true },
-  { name: "birthDate", type: "date" },
-  { name: "tel", type: "number" },
-  { name: "post", type: "string" },
-  { name: "academic_degree", type: "string" },
-  { name: "salary", type: "number" },
-  { name: "email", type: "email", required: true, unique: true },
-  { name: "password", type: "password", required: true }
+  { name: "name", required: true, title: "Имя" },
+  { name: "patronym", title: "Отчество" },
+  { name: "lastname", required: true, title: "Фамилия" },
+  { name: "birthDate", type: "date", title: "Дата рождения" },
+  { name: "tel", type: "number", title: "Телефон" },
+  { name: "post", title: "Должность" },
+  { name: "academic_degree", title: "Академическая степень" },
+  { name: "salary", type: "number", title: "Доля ставки" },
+  {
+    name: "email",
+    type: "email",
+    required: true,
+    unique: true,
+    title: "E-mail"
+  },
+  { name: "password", type: "password", required: true, title: "Пароль" }
 ];
 
 const authorSchema = new Schema(createSchema(fields));
