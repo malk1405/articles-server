@@ -2,46 +2,23 @@ const mongoose = require("mongoose");
 require("mongoose-type-email");
 const bcrypt = require("bcryptjs");
 const { catchErr } = require("../utils/error");
-
+const { createSchema } = require("../utils/model");
 const Schema = mongoose.Schema;
 
-const authorSchema = new Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  patronym: {
-    type: String
-  },
-  lastname: {
-    type: String,
-    required: true
-  },
-  birthDate: {
-    type: Date
-  },
-  tel: {
-    type: Number
-  },
-  post: {
-    type: String
-  },
-  academic_degree: {
-    type: String
-  },
-  salary: {
-    type: Number
-  },
-  email: {
-    type: mongoose.SchemaTypes.Email,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true
-  }
-});
+const fields = [
+  { name: "name", type: "string", required: true },
+  { name: "patronym", type: "string" },
+  { name: "lastname", type: "string", required: true },
+  { name: "birthDate", type: "date" },
+  { name: "tel", type: "number", required: true },
+  { name: "post", type: "string" },
+  { name: "academic_degree", type: "string" },
+  { name: "salary", type: "number" },
+  { name: "email", type: "email", required: true, unique: true },
+  { name: "password", type: "password", required: true }
+];
+
+const authorSchema = new Schema(createSchema(fields));
 
 authorSchema.pre("save", async function(next) {
   let { password } = this;
