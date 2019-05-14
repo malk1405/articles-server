@@ -10,7 +10,7 @@ const fields = [
   { name: "patronym", type: "string" },
   { name: "lastname", type: "string", required: true },
   { name: "birthDate", type: "date" },
-  { name: "tel", type: "number", required: true },
+  { name: "tel", type: "number" },
   { name: "post", type: "string" },
   { name: "academic_degree", type: "string" },
   { name: "salary", type: "number" },
@@ -49,4 +49,4 @@ async function hashPassword(password) {
 
 const Author = mongoose.model("Author", authorSchema);
 
-module.exports = Author;
+module.exports = { Author, fields };

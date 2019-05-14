@@ -1,4 +1,4 @@
-const Author = require("../models/authors");
+const { Author, fields } = require("../models/authors");
 const { catchErr } = require("../utils/error");
 const bcrypt = require("bcryptjs");
 
@@ -28,5 +28,35 @@ module.exports = {
     } catch (error) {
       catchErr(error, next);
     }
+  },
+
+  signin: function(req, res, next) {
+    res.json(
+      fields
+        .filter(({ name }) => {
+          switch (name) {
+            case "email":
+            case "password":
+              return true;
+            default:
+              return false;
+          }
+        })
+        .map(el => {
+          const { unique, ...newEl } = el;
+          return newEl;
+        })
+    );
+  },
+
+  signup: function(req, res, next) {
+    res.json(
+      fields
+        .filter(({ required }) => required)
+        .map(el => {
+          const { unique, ...newEl } = el;
+          return newEl;
+        })
+    );
   }
 };
