@@ -36,15 +36,11 @@ module.exports = {
     });
 
     try {
-      const newAuthor = await author.save();
-      res.json(newAuthor);
+      req.user = await author.save();
+      return next();
     } catch (error) {
       catchErr(error, next);
     }
-
-    // Author.create({ name, lastname, birthDate: newBirthDate, email, password })
-    // .then(newAuthor => res.json(newAuthor))
-    // .catch(err => catchErr(err, next));
   },
   update: function(req, res) {
     const { name, lastname, birthDate, email } = req.body;

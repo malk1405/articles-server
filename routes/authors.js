@@ -1,10 +1,11 @@
 const router = require("express").Router();
+const jwt = require("../middleware/jwt");
 const authorsController = require("../controllers/authorsController");
 
 router
   .route("/")
   .get(authorsController.findAll)
-  .post(authorsController.create);
+  .post(authorsController.create, jwt.addToken);
 
 router
   .route("/:id")

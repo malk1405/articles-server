@@ -3,7 +3,9 @@ const { catchErr } = require("../utils/error");
 const bcrypt = require("bcryptjs");
 
 module.exports = {
-  login: async function({ body: { email, password } }, res, next) {
+  login: async function(req, res, next) {
+    const { email, password } = req.body;
+
     try {
       if (!email || !password)
         return catchErr(
@@ -11,22 +13,20 @@ module.exports = {
           next
         );
 
-      const user = await Author.findOne({ email });
-      if (!user)
+      req.user = await Author.findOne({ email });
+      if (!req.user)
         return catchErr(
           { statusCode: 400, message: "Пользователь не найден" },
           next
         );
 
-      const isMatch = await bcrypt.compare(password, user.password);
-
+      const isMatch = await bcrypt.compare(password, req.user.password);
       if (!isMatch)
         return catchErr({ statusCode: 400, message: "Неверный пароль" }, next);
 
-      const { name, lastname, _id } = user;
-      return res.json({ name, lastname, _id });
+      return next();
     } catch (error) {
-      catchErr(error);
+      catchErr(error, next);
     }
   }
 };

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const URI = require("../config/index");
+const { MONGODB_URI } = require("../config/index");
 
-mongoose.connect(URI, {
+mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useFindAndModify: false,
   useCreateIndex: true
