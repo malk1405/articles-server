@@ -30,6 +30,11 @@ module.exports = {
     const author = new Author({
       name,
       lastname,
+      patronym,
+      tel,
+      acDeg,
+      post,
+      salary,
       birthDate: newBirthDate,
       email,
       password
@@ -43,13 +48,29 @@ module.exports = {
     }
   },
   update: function(req, res) {
-    const { name, lastname, birthDate, email } = req.body;
+    console.log(req.body);
+    const {
+      name,
+      patronym,
+      tel,
+      acDeg,
+      post,
+      salary,
+      lastname,
+      birthDate,
+      email
+    } = req.body;
     const newBirthDate = checkDate(birthDate);
     const newAuthor = {};
     if (name) newAuthor.name = name;
     if (lastname) newAuthor.lastname = lastname;
     if (newBirthDate) newAuthor.birthDate = newBirthDate;
     if (email) newAuthor.email = email;
+    if (patronym) newAuthor.patronym = patronym;
+    if (tel) newAuthor.tel = tel;
+    if (acDeg) newAuthor.acDeg = acDeg;
+    if (post) newAuthor.post = post;
+    if (salary) newAuthor.salary = salary;
     Author.findOneAndUpdate({ _id: myObjectId(req.params.id) }, newAuthor, {
       new: true
     })

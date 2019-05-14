@@ -19,20 +19,40 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   create: function(req, res) {
-    const { title, publicationDate, authors } = req.body;
+    const { title, pages, publicationDate, authors } = req.body;
     const newPublicationDate = checkDate(publicationDate);
-    Article.create({ title, publicationDate: newPublicationDate, authors })
+    Article.create({
+      title,
+      pages,
+      publicationDate: newPublicationDate,
+      authors
+    })
       .then(newArticle => res.json(newArticle))
       .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {
-    const { name, lastname, birthDate, email } = req.body;
+    const {
+      name,
+      patronym,
+      tel,
+      acDeg,
+      post,
+      salary,
+      lastname,
+      birthDate,
+      email
+    } = req.body;
     const newBirthDate = checkDate(birthDate);
     const newArticle = {};
     if (name) newArticle.name = name;
     if (lastname) newArticle.lastname = lastname;
     if (newBirthDate) newArticle.birthDate = newBirthDate;
     if (email) newArticle.email = email;
+    if (patronym) newArticle.patronym = patronym;
+    if (tel) newArticle.tel = tel;
+    if (acDeg) newArticle.acDeg = acDeg;
+    if (post) newArticle.post = post;
+    if (salary) newArticle.salary = salary;
     Article.findOneAndUpdate({ _id: myObjectId(req.params.id) }, newArticle)
       .then(article => res.json(article))
       .catch(err => res.status(422).json(err));

@@ -10,12 +10,28 @@ const authorSchema = new Schema({
     type: String,
     required: true
   },
+  patronym: {
+    type: String,
+    required: true
+  },
   lastname: {
     type: String,
     required: true
   },
   birthDate: {
     type: Date
+  },
+  tel: {
+    type: Number
+  },
+  post: {
+    type: String
+  },
+  academic_degree: {
+    type: String
+  },
+  salary: {
+    type: Number
   },
   email: {
     type: mongoose.SchemaTypes.Email,

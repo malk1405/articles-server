@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const authorSchema = new Schema({
   authorId: mongoose.Types.ObjectId,
   name: String,
+  patronym: String,
   lastname: {
     type: String,
     required: true
@@ -18,6 +19,10 @@ const articleSchema = new Schema({
   publicationDate: Number,
   authors: {
     type: [authorSchema]
+  },
+  pages: {
+    type: Number,
+    required: true
   }
 });
 const Article = mongoose.model("Article", articleSchema);
