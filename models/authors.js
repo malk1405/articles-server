@@ -11,8 +11,7 @@ const authorSchema = new Schema({
     required: true
   },
   patronym: {
-    type: String,
-    required: true
+    type: String
   },
   lastname: {
     type: String,

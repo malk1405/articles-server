@@ -24,18 +24,10 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   create: async function(req, res, next) {
-    const { name, lastname, birthDate, email, password } = req.body;
-    const newBirthDate = checkDate(birthDate);
-
+    const { name, lastname, email, password } = req.body;
     const author = new Author({
       name,
       lastname,
-      patronym,
-      tel,
-      acDeg,
-      post,
-      salary,
-      birthDate: newBirthDate,
       email,
       password
     });
