@@ -34,7 +34,6 @@ module.exports = {
     }
   },
   update: function(req, res) {
-    console.log(req.body);
     const {
       name,
       patronym,
