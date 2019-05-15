@@ -36,6 +36,17 @@ authorSchema.pre("save", async function(next) {
   next();
 });
 
+authorSchema.pre("findOneAndUpdate", async function(next) {
+  try {
+    let { password } = this._update;
+    if (password) this._update.password = await hashPassword(password);
+  } catch (error) {
+    catchErr(error, next);
+  }
+
+  next();
+});
+
 async function hashPassword(password) {
   const hashedPassword = await new Promise((resolve, reject) => {
     bcrypt.genSalt(10, function(err, salt) {
