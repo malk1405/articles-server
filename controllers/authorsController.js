@@ -44,17 +44,13 @@ module.exports = {
     }
   },
   update: async function(req, res, next) {
-    const newBirthDate = checkDate(req.body.birthDate);
-    const newAuthor = { ...req.body, birthDate: newBirthDate };
     try {
-      const author = await Author.findOneAndUpdate(
-        { _id: myObjectId(req.params.id) },
-        newAuthor,
-        {
-          new: true
-        }
-      );
-      res.json(author);
+      const author = await Author.findOne({ _id: myObjectId(req.params.id) });
+      Object.keys(req.body).forEach(el => {
+        author[el] = req.body[el];
+      });
+      if (author.birthDate) author.birthDate = checkDate(author.birthDate);
+      res.json(await author.save());
     } catch (err) {
       catchErr(err, next);
     }
