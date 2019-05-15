@@ -24,13 +24,7 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   create: async function(req, res, next) {
-    const { name, lastname, email, password } = req.body;
-    const author = new Author({
-      name,
-      lastname,
-      email,
-      password
-    });
+    const author = new Author(req.body);
 
     try {
       req.user = await author.save();
