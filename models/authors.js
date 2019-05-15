@@ -27,11 +27,8 @@ const fields = [
 const authorSchema = new Schema(createSchema(fields));
 
 authorSchema.pre("save", async function(next) {
-  let { password } = this;
-
   try {
-    const hashedPassword = await hashPassword(password);
-    password = hashedPassword;
+    this.password = await hashPassword(this.password);
   } catch (error) {
     catchErr(error, next);
   }
