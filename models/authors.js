@@ -9,11 +9,6 @@ const fields = [
   { name: "name", required: true, title: "Имя" },
   { name: "patronym", title: "Отчество" },
   { name: "lastname", required: true, title: "Фамилия" },
-  { name: "birthDate", type: "date", title: "Дата рождения" },
-  { name: "tel", type: "number", title: "Телефон" },
-  { name: "post", title: "Должность" },
-  { name: "academic_degree", title: "Академическая степень" },
-  { name: "salary", type: "number", title: "Доля ставки" },
   {
     name: "email",
     type: "email",
@@ -21,6 +16,11 @@ const fields = [
     unique: true,
     title: "E-mail"
   },
+  { name: "birthDate", type: "date", title: "Дата рождения" },
+  { name: "tel", type: "number", title: "Телефон" },
+  { name: "post", title: "Должность" },
+  { name: "academic_degree", title: "Академическая степень" },
+  { name: "salary", type: "number", title: "Доля ставки" },
   { name: "password", type: "password", required: true, title: "Пароль" }
 ];
 

@@ -1,4 +1,4 @@
-const { Author } = require("../models/authors");
+const { Author, fields } = require("../models/authors");
 const myObjectId = require("mongoose").Types.ObjectId;
 
 const { catchErr } = require("../utils/error");
@@ -18,14 +18,24 @@ module.exports = {
       })
       .catch(err => res.status(422).json(err));
   },
-  findById: function(req, res) {
-    Author.findById(myObjectId(req.params.id))
-      .then(author => res.json(author))
-      .catch(err => res.status(422).json(err));
+  findById: async function({ params: { id } }, res, next) {
+    try {
+      const author = await Author.findById(myObjectId(id));
+      res.json(
+        fields
+          .filter(({ name }) => name !== "password")
+          .map(e => {
+            const { unique, ...newEl } = { ...e };
+            newEl.value = author[e.name] || "";
+            return newEl;
+          })
+      );
+    } catch (err) {
+      catchErr(err, next);
+    }
   },
   create: async function(req, res, next) {
     const author = new Author(req.body);
-
     try {
       req.user = await author.save();
       return next();
@@ -33,36 +43,21 @@ module.exports = {
       catchErr(error, next);
     }
   },
-  update: function(req, res) {
-    const {
-      name,
-      patronym,
-      tel,
-      acDeg,
-      post,
-      salary,
-      lastname,
-      birthDate,
-      email
-    } = req.body;
-    const newBirthDate = checkDate(birthDate);
-    const newAuthor = {};
-    if (name) newAuthor.name = name;
-    if (lastname) newAuthor.lastname = lastname;
-    if (newBirthDate) newAuthor.birthDate = newBirthDate;
-    if (email) newAuthor.email = email;
-    if (patronym) newAuthor.patronym = patronym;
-    if (tel) newAuthor.tel = tel;
-    if (acDeg) newAuthor.acDeg = acDeg;
-    if (post) newAuthor.post = post;
-    if (salary) newAuthor.salary = salary;
-    Author.findOneAndUpdate({ _id: myObjectId(req.params.id) }, newAuthor, {
-      new: true
-    })
-      .then(author => {
-        res.json(author);
-      })
-      .catch(err => res.status(422).json(err));
+  update: async function(req, res, next) {
+    const newBirthDate = checkDate(req.body.birthDate);
+    const newAuthor = { ...req.body, birthDate: newBirthDate };
+    try {
+      const author = await Author.findOneAndUpdate(
+        { _id: myObjectId(req.params.id) },
+        newAuthor,
+        {
+          new: true
+        }
+      );
+      res.json(author);
+    } catch (err) {
+      catchErr(err, next);
+    }
   },
   remove: function(req, res) {
     Author.findById({ _id: myObjectId(req.params.id) })
