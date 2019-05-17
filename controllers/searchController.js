@@ -3,7 +3,7 @@ const { Author } = require("../models/authors");
 const { catchErr } = require("../utils/error");
 
 module.exports = {
-  search: async function({ query: { value } }, res, next) {
+  search: async function({ query: { value, type } }, res, next) {
     try {
       const articlesNumber = await Article.find({
         $or: [
@@ -11,7 +11,7 @@ module.exports = {
           { "authors.name": new RegExp(value, "i") },
           { "authors.lastname": new RegExp(value, "i") }
         ]
-      });
+      }).countDocuments();
       const authorsNumber = await Author.find({
         $or: [
           { lastname: new RegExp(value, "i") },
