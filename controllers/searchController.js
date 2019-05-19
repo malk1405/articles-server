@@ -2,6 +2,10 @@ const Article = require("../models/articles");
 const { Author } = require("../models/authors");
 const { catchErr } = require("../utils/error");
 
+const buttons = [
+  { name: "articles", title: "Статьи" },
+  { name: "authors", title: "Авторы" }
+];
 module.exports = {
   search: async function({ query: { value, page } }, res, next) {
     try {
@@ -12,7 +16,6 @@ module.exports = {
           { "authors.lastname": new RegExp(value, "i") }
         ]
       });
-      const articlesNumber = articles.length;
 
       const authors = await Author.find({
         $or: [
@@ -21,11 +24,14 @@ module.exports = {
         ]
       });
 
-      const authorsNumber = authors.length;
-      if (page === "authors") {
-        return res.json({ articlesNumber, authorsNumber, authors });
-      }
-      res.json({ articlesNumber, authorsNumber, articles });
+      const responce = {
+        buttons,
+        authorsNumber: authors.length,
+        articlesNumber: articles.length
+      };
+      if (page === "authors") responce.authors = authors;
+      else responce.articles = articles;
+      res.json(responce);
     } catch (error) {
       catchErr(error, next);
     }
