@@ -7,13 +7,20 @@ const buttons = [
   { name: "authors", title: "Авторы" }
 ];
 module.exports = {
-  search: async function({ query: { value, page } }, res, next) {
+  search: async function({ query: { value, page, min, max } }, res, next) {
     try {
+      const startDate = min ? new Date(min) : new Date("100");
+      const endDate = max ? new Date(max) : new Date("3000");
       const articles = await Article.find({
-        $or: [
-          { title: new RegExp(value, "i") },
-          { "authors.name": new RegExp(value, "i") },
-          { "authors.lastname": new RegExp(value, "i") }
+        $and: [
+          {
+            $or: [
+              { title: new RegExp(value, "i") },
+              { "authors.name": new RegExp(value, "i") },
+              { "authors.lastname": new RegExp(value, "i") }
+            ]
+          },
+          { publicationDate: { $gte: startDate, $lte: endDate } }
         ]
       });
 
@@ -30,7 +37,13 @@ module.exports = {
         articlesNumber: articles.length
       };
       if (page === "authors") responce.authors = authors;
-      else responce.articles = articles;
+      else {
+        responce.fields = [
+          { name: "min", type: "number", title: "От" },
+          { name: "max", type: "number", title: "До" }
+        ];
+        responce.articles = articles;
+      }
       res.json(responce);
     } catch (error) {
       catchErr(error, next);

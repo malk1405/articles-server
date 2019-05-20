@@ -16,9 +16,11 @@ const articleSchema = new Schema({
     type: String,
     required: true
   },
-  publicationDate: Number,
+  publicationDate: { type: Date, required: true },
+
   authors: {
-    type: [authorSchema]
+    type: [authorSchema],
+    required: true
   },
   pages: {
     type: Number,
