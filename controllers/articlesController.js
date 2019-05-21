@@ -58,8 +58,7 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   remove: function(req, res) {
-    Article.findById(myObjectId(req.body.id))
-      .then(article => article.remove())
+    Article.deleteMany({ _id: { $in: req.body.id } })
       .then(allarticles => res.json(allarticles))
       .catch(err => res.status(422).json(err));
   }
