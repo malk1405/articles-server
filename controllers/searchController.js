@@ -7,7 +7,11 @@ const buttons = [
   { name: "authors", title: "Авторы" }
 ];
 module.exports = {
-  search: async function({ query: { value, page, min, max } }, res, next) {
+  search: async function(
+    { query: { value, page, min, max, authorId } },
+    res,
+    next
+  ) {
     try {
       const startDate = min ? new Date(min) : new Date("100");
       const endDate = max ? new Date(max) : new Date("3000");
@@ -20,7 +24,8 @@ module.exports = {
               { "authors.lastname": new RegExp(value, "i") }
             ]
           },
-          { publicationDate: { $gte: startDate, $lte: endDate } }
+          { publicationDate: { $gte: startDate, $lte: endDate } },
+          authorId ? { "authors.authorId": authorId } : {}
         ]
       });
 
