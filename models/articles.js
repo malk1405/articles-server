@@ -12,7 +12,7 @@ const fields = [
   { name: "title", title: "Название", required: true },
   {
     name: "publicationDate",
-    type: "number",
+    type: "date",
     title: "Дата публикации",
     required: true
   },
