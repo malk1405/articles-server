@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 require("mongoose-type-email");
 
-module.exports.createSchema = function(fields) {
+createSchema = function(fields) {
   const res = {};
   fields.forEach(el => {
     const { name, required, type, unique } = el;
@@ -29,9 +29,19 @@ module.exports.createSchema = function(fields) {
           case "number":
             res[name].type = mongoose.SchemaTypes.Number;
             break;
+
+          case "id":
+            res[name].type = mongoose.Types.ObjectId;
+            break;
+
+          case "array":
+            if (!Array.isArray(el.of))
+              throw new Error("Атрибут of должен быть массивом");
+            res[name].type = [createSchema(el.of)];
+            break;
           default:
             throw new Error(
-              `Неподдерживаемый тип. Элемент ${JSON.stringify(el)}`
+              `Неподдерживаемый тип: "${type}". Элемент ${JSON.stringify(el)}`
             );
         }
     } else
@@ -40,3 +50,5 @@ module.exports.createSchema = function(fields) {
 
   return res;
 };
+
+module.exports.createSchema = createSchema;

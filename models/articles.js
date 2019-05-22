@@ -1,32 +1,37 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const { createSchema } = require("../utils/model");
 
-const authorSchema = new Schema({
-  authorId: mongoose.Types.ObjectId,
-  name: String,
-  patronym: String,
-  lastname: {
-    type: String,
-    required: true
-  }
-});
+const author_fields = [
+  { name: "name", required: true, title: "Имя" },
+  { name: "lastname", required: true, title: "Фамилия" },
+  { name: "authorId", type: "id" }
+];
 
-const articleSchema = new Schema({
-  title: {
-    type: String,
+const fields = [
+  { name: "title", title: "Название", required: true },
+  {
+    name: "publicationDate",
+    type: "number",
+    title: "Дата публикации",
     required: true
   },
-  publicationDate: { type: Date, required: true },
-
-  authors: {
-    type: [authorSchema],
+  {
+    name: "pages",
+    type: "number",
+    title: "Количество страниц",
     required: true
   },
-  pages: {
-    type: Number,
-    required: true
+  {
+    name: "authors",
+    required: true,
+    type: "array",
+    of: author_fields,
+    title: "Автор"
   }
-});
+];
+
+const articleSchema = new Schema(createSchema(fields));
 const Article = mongoose.model("Article", articleSchema);
 
 module.exports = Article;
