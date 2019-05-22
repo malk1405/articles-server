@@ -2,10 +2,10 @@ const Article = require("../models/articles");
 const { Author } = require("../models/authors");
 const { catchErr } = require("../utils/error");
 
-const buttons = [
-  { name: "articles", title: "Статьи" },
-  { name: "authors", title: "Авторы" }
-];
+const buttons = {
+  articles: { title: "Статьи" },
+  authors: { title: "Авторы" }
+};
 module.exports = {
   search: async function(
     { query: { value, page, min, max, authorId, pageNumber = 1, limit = 0 } },
@@ -16,7 +16,7 @@ module.exports = {
     try {
       const startDate = min ? new Date(min) : new Date("100");
       const endDate = max ? new Date(max) : new Date("3000");
-      const articlesNumber = await Article.find({
+      buttons.articles.number = await Article.find({
         $and: [
           {
             $or: [
@@ -30,7 +30,7 @@ module.exports = {
         ]
       }).countDocuments();
 
-      const authorsNumber = await Author.find({
+      buttons.authors.number = await Author.find({
         $or: [
           { lastname: new RegExp(value, "i") },
           { name: new RegExp(value, "i") }
@@ -38,9 +38,7 @@ module.exports = {
       }).countDocuments();
 
       const responce = {
-        buttons,
-        authorsNumber,
-        articlesNumber
+        buttons
       };
 
       if (page === "authors")
