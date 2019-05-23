@@ -8,11 +8,10 @@ const buttons = {
 };
 module.exports = {
   search: async function(
-    { query: { value, page, min, max, authorId, pageNumber = 1, limit = 0 } },
+    { query: { value, type, min, max, authorId, pageNumber = 1, limit = 0 } },
     res,
     next
   ) {
-    console.log(pageNumber, limit);
     try {
       const startDate = min ? new Date(min) : new Date("100");
       const endDate = max ? new Date(max) : new Date("3000");
@@ -41,7 +40,7 @@ module.exports = {
         buttons
       };
 
-      if (page === "authors")
+      if (type === "authors")
         responce.authors = await Author.find({
           $or: [
             { lastname: new RegExp(value, "i") },
