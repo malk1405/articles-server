@@ -34,6 +34,7 @@ module.exports = {
   findById: async function({ params: { id } }, res, next) {
     try {
       const author = await Author.findById(myObjectId(id));
+      if (!author) throw new Error("Автор не найден");
       res.json(
         fields
           .filter(({ name }) => name !== "password")
